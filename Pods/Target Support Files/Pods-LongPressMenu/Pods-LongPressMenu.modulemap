@@ -1,0 +1,6 @@
+module Pods_LongPressMenu {
+  umbrella header "Pods-LongPressMenu-umbrella.h"
+
+  export *
+  module * { export * }
+}
