@@ -19,6 +19,9 @@
 		63CB09822812471F0067E492 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CB097E2812471F0067E492 /* MenuView.swift */; };
 		63CB09842812474D0067E492 /* UICollectionViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63CB09832812474D0067E492 /* UICollectionViewExtension.swift */; };
 		8B1F6EC80B7AA6BC7CDA8AAC /* libPods-LongPressMenu.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F43B5CAD11BC9AEC4A394D3 /* libPods-LongPressMenu.a */; };
+		8CB7BE392B3170F7001B76B7 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7BE382B3170F7001B76B7 /* UIColorExtensions.swift */; };
+		8CB7BE3B2B31716B001B76B7 /* MenuStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7BE3A2B31716B001B76B7 /* MenuStyle.swift */; };
+		8CB7BE3D2B31728F001B76B7 /* ScreenConfigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB7BE3C2B31728F001B76B7 /* ScreenConfigure.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		63CB097D2812471F0067E492 /* MenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		63CB097E2812471F0067E492 /* MenuView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		63CB09832812474D0067E492 /* UICollectionViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewExtension.swift; sourceTree = "<group>"; };
+		8CB7BE382B3170F7001B76B7 /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		8CB7BE3A2B31716B001B76B7 /* MenuStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStyle.swift; sourceTree = "<group>"; };
+		8CB7BE3C2B31728F001B76B7 /* ScreenConfigure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenConfigure.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,11 +102,14 @@
 		63CB097A2812471F0067E492 /* LongPressMenu */ = {
 			isa = PBXGroup;
 			children = (
-				63CB097B2812471F0067E492 /* MenuItemContainer.swift */,
 				63CB097C2812471F0067E492 /* MenuConstant.swift */,
 				63CB097D2812471F0067E492 /* MenuItem.swift */,
+				63CB097B2812471F0067E492 /* MenuItemContainer.swift */,
+				8CB7BE3A2B31716B001B76B7 /* MenuStyle.swift */,
 				63CB097E2812471F0067E492 /* MenuView.swift */,
 				63CB09832812474D0067E492 /* UICollectionViewExtension.swift */,
+				8CB7BE382B3170F7001B76B7 /* UIColorExtensions.swift */,
+				8CB7BE3C2B31728F001B76B7 /* ScreenConfigure.swift */,
 			);
 			path = LongPressMenu;
 			sourceTree = "<group>";
@@ -211,11 +220,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CB7BE392B3170F7001B76B7 /* UIColorExtensions.swift in Sources */,
 				63CB09822812471F0067E492 /* MenuView.swift in Sources */,
 				63CB096B281246360067E492 /* ViewController.swift in Sources */,
 				63CB097F2812471F0067E492 /* MenuItemContainer.swift in Sources */,
+				8CB7BE3D2B31728F001B76B7 /* ScreenConfigure.swift in Sources */,
 				63CB09802812471F0067E492 /* MenuConstant.swift in Sources */,
 				63CB09842812474D0067E492 /* UICollectionViewExtension.swift in Sources */,
+				8CB7BE3B2B31716B001B76B7 /* MenuStyle.swift in Sources */,
 				63CB09812812471F0067E492 /* MenuItem.swift in Sources */,
 				63CB0967281246360067E492 /* AppDelegate.swift in Sources */,
 				63CB0969281246360067E492 /* SceneDelegate.swift in Sources */,

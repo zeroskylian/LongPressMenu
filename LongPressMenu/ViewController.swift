@@ -27,7 +27,7 @@ class ViewController: UIViewController {
             let add = MenuItem(title: "测试", image: UIImage(named: "add")) {
                 
             }
-            MenuView.show(from: view, style: .vertical, items: [add])
+            MenuView.show(from: view, style: .horizontal(height: 0), items: [add])
         default:
             break
         }

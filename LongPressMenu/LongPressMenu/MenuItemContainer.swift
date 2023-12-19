@@ -24,12 +24,18 @@ class MenuItemContainer: UIView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(cellWithClass: MenuItemContainerVerticalCell.self)
-        collectionView.register(cellWithClass: MenuItemContainerHorizontalCell.self)
+        collectionView.register(cellWithClass: MenuItemContainerDefaultCell.self)
         collectionView.backgroundColor = .clear
         return collectionView
     }()
     
+    let line: UIView = {
+        let line = UIView()
+        line.backgroundColor = UIColor.init(hexString: "#F1F1F1")?.withAlphaComponent(0.2)
+        line.isHidden = true
+        return line
+    }()
+
     let style: MenuStyle
     
     init(style: MenuStyle, items: [MenuItem]) {
@@ -45,31 +51,47 @@ class MenuItemContainer: UIView {
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        collectionView.addSubview(line)
+        let size = calculateSize()
+        let width = size.width - 24
+        let originY = style.size.height + style.inset.top + style.verticalSpace / 2.0
+        line.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(12)
+            make.width.equalTo(width)
+            make.top.equalToSuperview().offset(originY)
+            make.height.equalTo(1)
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// 计算大小
+    /// - Returns: size
     func calculateSize() -> CGSize {
         let insetHeight = style.inset.top + style.inset.bottom
         let insetWidth = style.inset.left + style.inset.right
         let size = style.size
+        // 单行
         if items.count <= style.max {
             var interLine: Int = 1
             let maxWidth = UIScreen.main.bounds.width - insetWidth - style.horizontalMiniSpace * 2
-            let currentWidth = CGFloat(items.count) * size.width
+            let currentWidth = CGFloat(items.count) * size.width + CGFloat(items.count - 1) * style.horizontalSpace
             if currentWidth > maxWidth {
-                let row: Int = Int(maxWidth / size.width)
+                let row: Int = Int(maxWidth / (size.width + style.horizontalSpace))
                 let reminder = items.count % row
                 interLine = items.count / row + (reminder != 0 ? 1 : 0)
+                line.isHidden = false
             }
-            let cal = CGSize(width: insetWidth + min(currentWidth, maxWidth), height: insetHeight + size.height * CGFloat(interLine))
+            let cal = CGSize(width: insetWidth + min(currentWidth, maxWidth), height: insetHeight + size.height * CGFloat(interLine) + CGFloat(max(interLine - 1, 0)) * style.verticalSpace)
             return cal
         } else {
             let reminder = items.count % style.max
             let line = items.count / style.max + (reminder != 0 ? 1 : 0)
-            let cal = CGSize(width: insetWidth + CGFloat(style.max) * size.width, height: insetHeight + size.height * CGFloat(line))
+            let cal = CGSize(width: insetWidth + CGFloat(style.max) * size.width + CGFloat(style.max - 1) * style.horizontalSpace,
+                             height: insetHeight + size.height * CGFloat(line) + CGFloat(max(line - 1, 0)) * style.verticalSpace)
+            self.line.isHidden = false
             return cal
         }
     }
@@ -85,11 +107,11 @@ extension MenuItemContainer: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return style.verticalSpace
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return style.horizontalSpace
     }
 }
 
@@ -102,7 +124,7 @@ extension MenuItemContainer: UICollectionViewDelegate {
 
 extension MenuItemContainer: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withClass: MenuItemContainerHorizontalCell.self, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withClass: MenuItemContainerDefaultCell.self, for: indexPath)
         cell.bind(item: items[indexPath.row])
         return cell
     }
@@ -112,14 +134,15 @@ extension MenuItemContainer: UICollectionViewDataSource {
     }
 }
 
-class MenuItemContainerVerticalCell: UICollectionViewCell {
+class MenuItemContainerDefaultCell: UICollectionViewCell {
     let imageView: UIImageView = UIImageView()
     
     let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 12)
+        titleLabel.font = .systemFont(ofSize: 11)
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 2
         return titleLabel
     }()
     
@@ -129,49 +152,12 @@ class MenuItemContainerVerticalCell: UICollectionViewCell {
         contentView.addSubview(titleLabel)
         imageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview()
-            make.size.equalTo(CGSize(width: 30, height: 30))
+            make.top.equalToSuperview().offset(0)
+            make.size.equalTo(CGSize(width: 22, height: 22))
         }
         titleLabel.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(20)
-        }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bind(item: MenuItem) {
-        imageView.image = item.image
-        titleLabel.text = item.title
-    }
-}
-
-class MenuItemContainerHorizontalCell: UICollectionViewCell {
-    let imageView: UIImageView = UIImageView()
-    
-    let titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 12)
-        titleLabel.textColor = .white
-        titleLabel.textAlignment = .center
-        return titleLabel
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.addSubview(imageView)
-        contentView.addSubview(titleLabel)
-        imageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.left.equalToSuperview().offset(12)
-            make.size.equalTo(CGSize(width: 30, height: 30))
-        }
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.right.bottom.equalToSuperview()
-            make.left.equalTo(imageView.snp.right)
+            make.left.right.equalToSuperview()
+            make.top.equalTo(imageView.snp.bottom).offset(8)
         }
     }
     
